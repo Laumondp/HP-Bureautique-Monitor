@@ -613,20 +613,20 @@ function saveFloorPlanConfig(config) {
  * Mapping des modèles vers les noms de fichiers image
  */
 const PRINTER_IMAGE_MAPPING = {
-  '110PAX4': '110PAXL4.jpg',
-  '110PAXL4': '110PAXL4.jpg',
-  'Z4M': 'Z4M.jpg',
-  'Z6M': 'Z6M.jpg',
-  'Z6MPlus': 'Z6MPlus.jpg',
-  'ZE500': 'ZE500L4.jpg',
-  'ZE500L4': 'ZE500L4.jpg',
-  'ZM400': 'ZM400.jpg',
-  'ZM600': 'ZM600.jpg',
-  'ZT230': 'Z230.jpg',
-  'ZT410': 'Z410.jpg',
-  'ZT411': 'Z411.jpg',
-  'ZT420': 'Z420.jpg',
-  'ZT421': 'Z421.jpg'
+  'LaserJet E50145': 'HP_E50145.jpg',
+  'LaserJet E40040': 'HP_E40040.jpg',
+  'LaserJet MFP E42540': 'HP_E42540.jpg',
+  'LaserJet MFP E72530': 'HP_E72530.jpg',
+  'LaserJet MFP E73130': 'HP_E73130.jpg',
+  'LaserJet MFP E82540': 'HP_E82540.jpg',
+  'LaserJet Mngd E52645': 'HP_E52645.jpg',
+  'LaserJet Mngd E50145dnm': 'HP_E50145.jpg',
+  'LaserJet Managed E40040': 'HP_E40040.jpg',
+  'LJ Mgd E50145dnm': 'HP_E50145.jpg',
+  'Color LaserJet E55040': 'HP_E55040.jpg',
+  'Color LaserJet MFP E87760': 'HP_E87760.jpg',
+  'Color LJ Mgd MFP E877dn': 'HP_E877dn.jpg',
+  'SHARP BP-50M31': 'SHARP_BP50M31.jpg'
 };
 
 /**
@@ -1030,14 +1030,16 @@ function exportPrintersToCSV() {
  */
 function getSupportedModels() {
   return [
-    { model: 'ZT410', description: 'Imprimante industrielle 4 pouces' },
-    { model: 'ZT411', description: 'Imprimante industrielle 4 pouces (nouvelle génération)' },
-    { model: 'ZT420', description: 'Imprimante industrielle 6 pouces' },
-    { model: 'ZT421', description: 'Imprimante industrielle 6 pouces (nouvelle génération)' },
-    { model: 'ZM600', description: 'Imprimante industrielle haute performance' },
-    { model: 'Z6M', description: 'Imprimante industrielle grand format' },
-    { model: 'ZM400', description: 'Imprimante industrielle moyenne gamme' },
-    { model: 'ZT230', description: 'Imprimante industrielle compacte' }
+    { model: 'LaserJet E50145', description: 'HP LaserJet Managed E50145' },
+    { model: 'LaserJet E40040', description: 'HP LaserJet Managed E40040' },
+    { model: 'LaserJet MFP E42540', description: 'HP LaserJet MFP E42540' },
+    { model: 'LaserJet MFP E72530', description: 'HP LaserJet MFP E72530' },
+    { model: 'LaserJet MFP E73130', description: 'HP LaserJet MFP E73130' },
+    { model: 'LaserJet MFP E82540', description: 'HP LaserJet MFP E82540' },
+    { model: 'LaserJet Mngd E52645', description: 'HP LaserJet Managed E52645' },
+    { model: 'Color LaserJet E55040', description: 'HP Color LaserJet E55040' },
+    { model: 'Color LaserJet MFP E87760', description: 'HP Color LaserJet MFP E87760' },
+    { model: 'SHARP BP-50M31', description: 'Sharp BP-50M31' }
   ];
 }
 
@@ -1114,8 +1116,8 @@ function validatePrintersSheet(sheet) {
     const serial = row[5] ? row[5].toString().trim() : '';
     const mac = row[6] ? row[6].toString().trim() : '';
 
-    // Liste des modèles valides
-    const validModels = ['110PAX4', 'Z4M', 'Z6M', 'Z6MPLUS', 'ZE500', 'ZE500L4', 'ZM400', 'ZM600', 'ZT230', 'ZT410', 'ZT411', 'ZT420', 'ZT421'];
+    // Liste des modèles valides (HP Bureautique - validation désactivée car modèles variés)
+    // const validModels = ['LaserJet E50145', 'LaserJet E40040', 'LaserJet MFP E42540', ...];
 
     // Vérifier ID
     if (id) {
@@ -1142,13 +1144,13 @@ function validatePrintersSheet(sheet) {
       }
     }
 
-    // Vérifier Model
-    if (model) {
-      if (!validModels.includes(model.toUpperCase())) {
-        errors.push(`Ligne ${rowNum}: Modèle invalide "${model}". Valides: ${validModels.join(', ')}`);
-        sheet.getRange(rowNum, 4).setBackground('#ffcccc');
-      }
-    }
+    // Vérifier Model - Désactivé pour HP Bureautique (modèles variés)
+    // if (model) {
+    //   if (!validModels.includes(model.toUpperCase())) {
+    //     errors.push(`Ligne ${rowNum}: Modèle invalide "${model}". Valides: ${validModels.join(', ')}`);
+    //     sheet.getRange(rowNum, 4).setBackground('#ffcccc');
+    //   }
+    // }
 
     // Vérifier Serial
     if (serial) {
