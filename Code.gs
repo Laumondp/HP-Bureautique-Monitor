@@ -10,7 +10,7 @@
 const PRINTER_COLUMNS = ['id', 'name', 'ip', 'model', 'location', 'serial', 'mac', 'x', 'y', 'description', 'contractEndDate'];
 
 // ID du Google Sheets (hardcodé pour éviter les problèmes de configuration)
-const HARDCODED_SPREADSHEET_ID = '1kyygAmHQtnX-SSM0nGAFibreIkMntXqy';
+const HARDCODED_SPREADSHEET_ID = '1Ha-klMOZDRizS4NNp6RLghclZPMqykhXqtvhxcyHM70';
 
 // Clé API pour sécuriser les requêtes du script PowerShell
 // IMPORTANT: Changez cette clé et gardez-la secrète !
