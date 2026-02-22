@@ -93,10 +93,10 @@ function getPrinterConfig() {
 
       printers.push({
         id: row[0] || 'printer_' + Date.now() + '_' + i,
-        name: row[1] || '',
-        ip: row[2] || '',
-        model: row[3] || '',
-        location: row[4] || '',
+        name: (row[1] || '').toString().trim(),
+        ip: (row[2] || '').toString().trim(),
+        model: (row[3] || '').toString().trim(),
+        location: (row[4] || '').toString().trim(),
         serial: row[5] || '',
         mac: row[6] || '',
         x: parseInt(row[7]) || 0,
@@ -648,6 +648,136 @@ function setupPrinterImages() {
   }
 
   console.log('Configuration images imprimantes:', results);
+  return results;
+}
+
+/**
+ * Nettoie les espaces en début/fin dans la colonne Model du spreadsheet
+ */
+function cleanModelNames() {
+  const spreadsheetId = getSpreadsheetId();
+  const ss = SpreadsheetApp.openById(spreadsheetId);
+  const sheet = ss.getSheetByName('Printers');
+
+  if (!sheet) {
+    console.log('Feuille Printers non trouvée');
+    return;
+  }
+
+  const lastRow = sheet.getLastRow();
+
+  // Supprimer la validation de données sur les colonnes B, D, E
+  console.log('Suppression des validations de données...');
+  if (lastRow > 1) {
+    sheet.getRange(2, 2, lastRow - 1, 1).clearDataValidations(); // Name (B)
+    sheet.getRange(2, 4, lastRow - 1, 1).clearDataValidations(); // Model (D)
+    sheet.getRange(2, 5, lastRow - 1, 1).clearDataValidations(); // Location (E)
+  }
+
+  const data = sheet.getDataRange().getValues();
+  let fixedCount = 0;
+
+  // Colonne Model est à l'index 3 (D), Name à 1 (B), Location à 4 (E)
+  for (let i = 1; i < data.length; i++) {
+    const row = data[i];
+    let needsUpdate = false;
+
+    // Trim name (col B, index 1)
+    if (row[1] && row[1].toString().trim() !== row[1].toString()) {
+      sheet.getRange(i + 1, 2).setValue(row[1].toString().trim());
+      needsUpdate = true;
+    }
+
+    // Trim model (col D, index 3)
+    if (row[3] && row[3].toString().trim() !== row[3].toString()) {
+      sheet.getRange(i + 1, 4).setValue(row[3].toString().trim());
+      needsUpdate = true;
+    }
+
+    // Trim location (col E, index 4)
+    if (row[4] && row[4].toString().trim() !== row[4].toString()) {
+      sheet.getRange(i + 1, 5).setValue(row[4].toString().trim());
+      needsUpdate = true;
+    }
+
+    if (needsUpdate) fixedCount++;
+  }
+
+  console.log('Lignes corrigées: ' + fixedCount);
+  return { fixed: fixedCount };
+}
+
+/**
+ * Compare les modèles des imprimantes avec le mapping d'images
+ */
+function debugModelMatching() {
+  const printers = getPrinterConfig();
+  const mappingKeys = Object.keys(PRINTER_IMAGE_MAPPING);
+
+  const results = [];
+  const uniqueModels = [...new Set(printers.map(p => p.model))];
+
+  uniqueModels.forEach(model => {
+    const hasImage = mappingKeys.includes(model);
+    results.push({
+      model: model,
+      hasImage: hasImage,
+      suggestion: hasImage ? 'OK' : 'AJOUTER AU MAPPING'
+    });
+  });
+
+  console.log('=== MODÈLES DANS VOS DONNÉES ===');
+  results.forEach(r => console.log(JSON.stringify(r)));
+
+  console.log('=== CLÉS DU MAPPING ===');
+  mappingKeys.forEach(k => console.log(k));
+
+  return results;
+}
+
+/**
+ * Fonction de diagnostic pour vérifier les images
+ */
+function debugPrinterImages() {
+  const props = PropertiesService.getScriptProperties();
+  const results = [];
+
+  for (const model of Object.keys(PRINTER_IMAGE_MAPPING)) {
+    const propKey = 'PRINTER_IMAGE_' + model;
+    const fileId = props.getProperty(propKey);
+
+    const info = {
+      model: model,
+      propKey: propKey,
+      fileId: fileId || 'NON DÉFINI'
+    };
+
+    if (fileId) {
+      try {
+        const file = DriveApp.getFileById(fileId);
+        info.fileName = file.getName();
+        info.fileSize = file.getSize();
+        info.mimeType = file.getMimeType();
+        info.status = 'OK';
+
+        // Tester l'encodage base64
+        const blob = file.getBlob();
+        const base64Length = Utilities.base64Encode(blob.getBytes()).length;
+        info.base64Length = base64Length;
+      } catch (e) {
+        info.status = 'ERREUR';
+        info.error = e.message;
+      }
+    } else {
+      info.status = 'PAS DE FILE ID';
+    }
+
+    results.push(info);
+  }
+
+  console.log('=== DIAGNOSTIC IMAGES ===');
+  results.forEach(r => console.log(JSON.stringify(r)));
+
   return results;
 }
 

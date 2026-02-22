@@ -2,24 +2,27 @@
 
 Application Google Apps Script pour surveiller les imprimantes HP Bureautique sur un plan interactif avec zoom.
 
-**Version actuelle : v1.0**
+**Version actuelle : v1.31**
 
 ## Fonctionnalités
 
 - **Plan interactif** : Vue d'ensemble avec zoom et déplacement
 - **Image de plan personnalisée** : Intégration d'un plan PNG en arrière-plan (transparence 50%)
 - **Statut en temps réel** : Indicateurs vert (en ligne) / rouge (hors ligne) / orange (inconnu)
-- **Badge WiFi** : Icône WiFi pour les imprimantes sans fil avec couleur selon statut
-- **Barre latérale droite** : Totaux par modèle avec badges vert (online) et rouge (offline)
-- **Mode Edition** : Bouton pour verrouiller/déverrouiller le déplacement des imprimantes
-- **Grille magnétique** : Alignement automatique sur une grille de 10 pixels en mode édition
-- **Design moderne** : Header avec effet RGB animé
+- **Images des modeles** : Photos des imprimantes HP affichees dans la liste et la barre laterale
+- **Badge WiFi** : Icone WiFi pour les imprimantes sans fil avec couleur selon statut
+- **Barre laterale droite** : Totaux par modele avec badges vert (online) et rouge (offline)
+- **Mode Edition** : Bouton pour verrouiller/deverrouiller le deplacement des imprimantes
+- **Grille magnetique** : Alignement automatique sur une grille de 10 pixels en mode edition
+- **Design moderne** : Header avec effet RGB anime
 - **Gestion des imprimantes** : Ajouter, modifier, supprimer facilement
-- **Stockage Google Sheets** : Configuration centralisée et éditable
-- **Validation des données** : Unicité (ID, IP, MAC, Série) et format (IP, MAC, Modèle)
+- **Stockage Google Sheets** : Configuration centralisee et editable
+- **Validation des donnees** : Unicite (ID, IP, MAC, Serie) et format (IP, MAC)
 - **Alertes email** : Notifications automatiques lors des changements de statut
-- **Contrôle d'accès** : Restriction par liste d'emails autorisés
-- **Sécurité API** : Clé API requise pour les requêtes du script PowerShell
+- **Controle d'acces** : Restriction par liste d'emails autorises
+- **Securite API** : Cle API requise pour les requetes du script PowerShell
+- **Auto-refresh** : Actualisation automatique toutes les 60 secondes
+- **Force Refresh** : Bouton pour vider le cache et recharger les donnees
 
 ## Structure du projet
 

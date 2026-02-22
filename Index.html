@@ -1684,10 +1684,6 @@
         // Status text
         const statusText = status === 'online' ? 'En ligne' : status === 'offline' ? 'Hors ligne' : 'Inconnu';
 
-        // Contract badge
-        const contractInfo = getContractStatus(printer.contractEndDate);
-        const contractBadgeInline = `<span class="contract-badge-inline ${contractInfo.status}" title="${contractInfo.title}">C</span>`;
-
         item.innerHTML = `
           <div class="printer-item-content">
             <div class="printer-item-image-container">
@@ -1696,7 +1692,7 @@
             </div>
             <div class="printer-item-details">
               <div class="printer-item-header">
-                <div class="printer-name">${printer.name}${contractBadgeInline}</div>
+                <div class="printer-name">${printer.name}</div>
                 <div class="printer-actions">
                   <button class="printer-action-btn edit" title="Modifier">&#x270F;&#xFE0F;</button>
                   <button class="printer-action-btn delete" title="Supprimer">&#x1F5D1;&#xFE0F;</button>
@@ -1763,13 +1759,8 @@
         const isWifi = printer.ip && printer.ip.startsWith('10.7.23');
         const wifiBadge = isWifi ? `<span class="wifi-badge ${status}" title="WiFi">&#x1F4F6;</span>` : '';
 
-        // Badge contrat de maintenance
-        const contractInfo = getContractStatus(printer.contractEndDate);
-        const contractBadge = `<span class="contract-badge ${contractInfo.status}" title="${contractInfo.title}">C</span>`;
-
         marker.innerHTML = `
           <div class="printer-marker-icon">&#x1F5A8;&#xFE0F;</div>
-          ${contractBadge}
           ${wifiBadge}
           <div class="printer-marker-name">${printer.name}</div>
           <div class="printer-marker-label">

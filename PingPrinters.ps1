@@ -4,7 +4,7 @@
 # Note: Utilise TCP au lieu de ICMP (ping) car les pings sont souvent bloqués en entreprise
 
 # Configuration - URL de votre Web App déployée
-$WebAppUrl = "https://script.google.com/macros/s/AKfycbzBMlwnO6zubXRIme1fzSe6X6bGxW7Wgo_mXvsQl1xkU2HofLOZ_UA0WKR8QPAeeAWW/exec"
+$WebAppUrl = "https://script.google.com/macros/s/AKfycbznnKwXXvEdLohEAf2_a3iMYVrLwItRaiJKS0Vo5P40wW4MWbOEdxAMpwEMGBcYewgI/exec"
 
 # Charger la clé API depuis le fichier secrets (non versionné)
 $SecretsFile = "$PSScriptRoot\secrets.ps1"
