@@ -612,20 +612,20 @@ function saveFloorPlanConfig(config) {
  * Mapping des modèles vers les noms de fichiers image
  */
 const PRINTER_IMAGE_MAPPING = {
-  'LaserJet E50145': 'HP_E50145.jpg',
-  'LaserJet E40040': 'HP_E40040.jpg',
-  'LaserJet MFP E42540': 'HP_E42540.jpg',
-  'LaserJet MFP E72530': 'HP_E72530.jpg',
-  'LaserJet MFP E73130': 'HP_E73130.jpg',
-  'LaserJet MFP E82540': 'HP_E82540.jpg',
-  'LaserJet Mngd E52645': 'HP_E52645.jpg',
-  'LaserJet Mngd E50145dnm': 'HP_E50145.jpg',
-  'LaserJet Managed E40040': 'HP_E40040.jpg',
-  'LJ Mgd E50145dnm': 'HP_E50145.jpg',
-  'Color LaserJet E55040': 'HP_E55040.jpg',
-  'Color LaserJet MFP E87760': 'HP_E87760.jpg',
-  'Color LJ Mgd MFP E877dn': 'HP_E877dn.jpg',
-  'SHARP BP-50M31': 'SHARP_BP50M31.jpg'
+  'LaserJet E50145': 'E50145.jpg',
+  'LaserJet E40040': 'E40040.jpg',
+  'LaserJet MFP E42540': 'E42540.jpg',
+  'LaserJet MFP E72530': 'E72530.jpg',
+  'LaserJet MFP E73130': 'E73130.jpg',
+  'LaserJet MFP E82540': 'E82540.jpg',
+  'LaserJet Mngd E52645': 'E52645.jpg',
+  'LaserJet Mngd E50145dnm': 'E50145.jpg',
+  'LaserJet Managed E40040': 'E40040.jpg',
+  'LJ Mgd E50145dnm': 'E50145.jpg',
+  'Color LaserJet E55040': 'E55040.jpg',
+  'Color LaserJet MFP E87760': 'E87760.jpg',
+  'Color LJ Mgd MFP E877dn': 'E87760.jpg',
+  'SHARP BP-50M31': 'BP-50M31.jpg'
 };
 
 /**
