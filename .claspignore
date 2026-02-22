@@ -1,0 +1,18 @@
+# Ignorer tout sauf les fichiers Apps Script
+**/*.jpg
+**/*.png
+**/*.PNG
+**/*.csv
+**/*.xlsx
+**/*.ps1
+**/*.bat
+**/*.json
+!appsscript.json
+**/*.txt
+**/*.md
+.git/**
+.gitignore
+Archives/**
+printer_status_history.json
+sync_log.txt
+Index-3D-Test.html

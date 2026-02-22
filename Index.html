@@ -1,0 +1,2409 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <!-- Google Font Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* CSS Variables - Glassmorphism Light Theme */
+    :root {
+      --bg-main: #f0f4f8;
+      --bg-glass: rgba(255, 255, 255, 0.7);
+      --bg-glass-dark: rgba(255, 255, 255, 0.9);
+      --bg-glass-light: rgba(255, 255, 255, 0.5);
+      --text-primary: #1a1a2e;
+      --text-secondary: #64748b;
+      --text-muted: #94a3b8;
+      --accent: #3b82f6;
+      --accent-hover: #2563eb;
+      --accent-light: rgba(59, 130, 246, 0.1);
+      --success: #10b981;
+      --success-light: rgba(16, 185, 129, 0.1);
+      --danger: #ef4444;
+      --danger-light: rgba(239, 68, 68, 0.1);
+      --warning: #f59e0b;
+      --warning-light: rgba(245, 158, 11, 0.1);
+      --border-glass: rgba(255, 255, 255, 0.3);
+      --border-subtle: rgba(0, 0, 0, 0.08);
+      --shadow-glass: 0 8px 32px rgba(31, 38, 135, 0.15);
+      --shadow-soft: 0 4px 16px rgba(0, 0, 0, 0.08);
+      --shadow-hover: 0 12px 40px rgba(31, 38, 135, 0.2);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg-main);
+      color: var(--text-primary);
+      overflow: hidden;
+      min-height: 100vh;
+    }
+
+    /* RGB Wave Animation */
+    @keyframes rgbWave {
+      0% {
+        background-position: 0% 50%;
+      }
+      100% {
+        background-position: 200% 50%;
+      }
+    }
+
+    /* Glass effect utility class */
+    .glass {
+      background: var(--bg-glass);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid var(--border-glass);
+      border-radius: 16px;
+      box-shadow: var(--shadow-glass);
+    }
+
+    /* Header with RGB Wave Effect */
+    .header {
+      background: linear-gradient(
+        90deg,
+        #ff0000, #ff7f00, #ffff00, #7fff00,
+        #00ff00, #00ff7f, #00ffff, #007fff,
+        #0000ff, #7f00ff, #ff00ff, #ff007f,
+        #ff0000, #ff7f00, #ffff00, #7fff00,
+        #00ff00, #00ff7f, #00ffff, #007fff,
+        #0000ff, #7f00ff, #ff00ff, #ff007f,
+        #ff0000
+      );
+      background-size: 200% 100%;
+      animation: rgbWave 6s linear infinite;
+      padding: 15px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-subtle);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Overlay for readability */
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.85);
+      z-index: 0;
+    }
+
+    .header > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .header h1 {
+      font-size: 1.4em;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+    }
+
+    .header h1 span {
+      font-size: 0.5em;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .header-controls {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 10px 18px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 0.9em;
+      font-weight: 500;
+      font-family: inherit;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+      color: white;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.45);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0) scale(1);
+    }
+
+    /* Animation pour le bouton auto-refresh actif */
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    #refreshBtn.btn-primary #refreshIcon {
+      display: inline-block;
+      animation: spin 2s linear infinite;
+    }
+
+    .btn-secondary {
+      background: var(--bg-glass);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: var(--text-primary);
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-glass-dark);
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: var(--shadow-hover);
+    }
+
+    /* Main Container */
+    .main-container {
+      display: flex;
+      height: calc(100vh - 70px);
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 300px;
+      background: var(--bg-glass);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border-right: 1px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .sidebar-header {
+      padding: 16px 20px;
+      background: var(--bg-glass-dark);
+      font-weight: 600;
+      font-size: 0.95em;
+      color: var(--text-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    /* Right Sidebar - Model Summary */
+    .sidebar-right {
+      width: 120px;
+      background: var(--bg-glass);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border-left: 1px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .sidebar-right-header {
+      color: var(--text-primary);
+      font-size: 0.8em;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-subtle);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .model-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 16px;
+      position: relative;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .model-card:hover {
+      transform: scale(1.05);
+    }
+
+    .model-image {
+      width: 60px;
+      height: 60px;
+      background: var(--bg-glass-dark);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      position: relative;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .model-image-img {
+      width: 52px;
+      height: 52px;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    .model-image-emoji {
+      font-size: 28px;
+    }
+
+    .model-badge {
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+      border: 2px solid white;
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      z-index: 10;
+    }
+
+    .model-badge.online {
+      top: -6px;
+      left: -6px;
+      background: var(--success);
+    }
+
+    .model-badge.offline {
+      top: -6px;
+      right: -6px;
+      background: var(--danger);
+    }
+
+    .model-name {
+      color: var(--text-secondary);
+      font-size: 0.7em;
+      font-weight: 500;
+      margin-top: 6px;
+      text-align: center;
+    }
+
+    .printer-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+      background: var(--bg-glass-light);
+    }
+
+    .printer-item {
+      background: var(--bg-glass-dark);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border-left: 4px solid var(--text-muted);
+      border-top: 1px solid var(--border-glass);
+      border-right: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .printer-item:hover {
+      background: white;
+      transform: translateX(4px) scale(1.01);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .printer-item.online {
+      border-left-color: var(--success);
+      background: rgba(16, 185, 129, 0.15);
+    }
+
+    .printer-item.offline {
+      border-left-color: var(--danger);
+      background: rgba(239, 68, 68, 0.15);
+    }
+
+    .printer-item.unknown {
+      border-left-color: var(--warning);
+      background: rgba(147, 197, 253, 0.3);
+    }
+
+    .printer-name {
+      font-weight: 600;
+      font-size: 0.8em;
+      margin-bottom: 4px;
+      color: var(--text-primary);
+    }
+
+    .printer-info {
+      font-size: 0.7em;
+      color: var(--text-secondary);
+    }
+
+    .printer-status {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75em;
+      font-weight: 500;
+      margin-top: 8px;
+    }
+
+    .printer-item-content {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .printer-item-image-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .printer-item-image {
+      width: 50px;
+      height: 50px;
+      object-fit: contain;
+      border-radius: 8px;
+      background: white;
+      padding: 4px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .printer-item-image-placeholder {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      background: var(--bg-glass);
+      border-radius: 8px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .printer-status-badge {
+      margin-top: 4px;
+      padding: 2px 6px;
+      border-radius: 10px;
+      font-size: 0.65em;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    .printer-status-badge.status-online {
+      background: var(--success);
+      color: white;
+    }
+
+    .printer-status-badge.status-offline {
+      background: var(--danger);
+      color: white;
+    }
+
+    .printer-status-badge.status-unknown {
+      background: var(--warning);
+      color: white;
+    }
+
+    .printer-item-details {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .printer-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .printer-actions {
+      display: flex;
+      gap: 4px;
+    }
+
+    .printer-action-btn {
+      background: var(--bg-glass);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .printer-action-btn:hover {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+      transform: scale(1.1);
+    }
+
+    .printer-action-btn.delete:hover {
+      background: var(--danger);
+      border-color: var(--danger);
+      color: white;
+    }
+
+    .status-online {
+      background: var(--success-light);
+      color: var(--success);
+      border: 1px solid var(--success);
+    }
+
+    .status-offline {
+      background: var(--danger-light);
+      color: var(--danger);
+      border: 1px solid var(--danger);
+    }
+
+    .status-unknown {
+      background: var(--warning-light);
+      color: var(--warning);
+      border: 1px solid var(--warning);
+    }
+
+    /* Floor Plan Container */
+    .floor-plan-container {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    }
+
+    .floor-plan {
+      position: absolute;
+      transform-origin: 0 0;
+      cursor: grab;
+      background: white;
+      border: 2px dashed rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .floor-plan:active {
+      cursor: grabbing;
+    }
+
+    .floor-plan-grid {
+      display: none;
+    }
+
+    .floor-plan-image {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      opacity: 0.5;
+    }
+
+    /* Printer Markers */
+    .printer-marker {
+      position: absolute;
+      width: 25px;
+      height: 25px;
+      transform: translate(-50%, -50%);
+      cursor: pointer;
+      transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 10;
+    }
+
+    .printer-marker:hover {
+      transform: translate(-50%, -50%) scale(1.2);
+      z-index: 20;
+    }
+
+    .printer-marker-icon {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+      border: 3px solid white;
+    }
+
+    .printer-marker.online .printer-marker-icon {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+    }
+
+    .printer-marker.offline .printer-marker-icon {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+    }
+
+    .printer-marker.unknown .printer-marker-icon {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+    }
+
+    /* Animation clignotement pour imprimantes hors ligne */
+    @keyframes blink-offline {
+      0%, 50% {
+        opacity: 1;
+        box-shadow: 0 4px 15px rgba(239, 68, 68, 0.5);
+      }
+      25%, 75% {
+        opacity: 0.5;
+        box-shadow: 0 4px 25px rgba(239, 68, 68, 0.8);
+      }
+    }
+
+    .printer-marker.offline .printer-marker-icon {
+      animation: blink-offline 1.5s ease-in-out infinite;
+    }
+
+    .printer-item.offline {
+      animation: blink-offline 1.5s ease-in-out infinite;
+    }
+
+    .printer-marker-name {
+      position: absolute;
+      top: 27px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--text-primary);
+      font-size: 9px;
+      font-weight: 600;
+      text-align: center;
+      line-height: 1.2;
+      white-space: nowrap;
+      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.9), 0 0 4px white;
+      pointer-events: none;
+    }
+
+    /* Badge WiFi pour les imprimantes sans fil */
+    .wifi-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      font-size: 10px;
+      z-index: 15;
+      filter: drop-shadow(0 1px 1px rgba(0,0,0,0.3));
+    }
+
+    .wifi-badge.online {
+      color: #10b981;
+    }
+
+    .wifi-badge.offline {
+      color: #ef4444;
+      animation: blink-wifi 1s ease-in-out infinite;
+    }
+
+    .wifi-badge.unknown {
+      color: #f59e0b;
+    }
+
+    @keyframes blink-wifi {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* Badge Contrat de maintenance */
+    .contract-badge {
+      position: absolute;
+      top: -8px;
+      left: -8px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      font-size: 10px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      z-index: 15;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+      cursor: help;
+    }
+
+    .contract-badge.valid {
+      background: #10b981;
+    }
+
+    .contract-badge.expiring {
+      background: #f59e0b;
+      animation: pulse-contract 1.5s ease-in-out infinite;
+    }
+
+    .contract-badge.expired {
+      background: #ef4444;
+    }
+
+    .contract-badge.no-contract {
+      background: #6b7280;
+      opacity: 0.5;
+    }
+
+    @keyframes pulse-contract {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    /* Badge contrat dans la liste */
+    .contract-badge-inline {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      font-size: 10px;
+      font-weight: bold;
+      color: white;
+      margin-left: 6px;
+      cursor: help;
+    }
+
+    .contract-badge-inline.valid {
+      background: #10b981;
+    }
+
+    .contract-badge-inline.expiring {
+      background: #f59e0b;
+    }
+
+    .contract-badge-inline.expired {
+      background: #ef4444;
+    }
+
+    .contract-badge-inline.no-contract {
+      background: #6b7280;
+      opacity: 0.5;
+    }
+
+    .printer-marker-label {
+      position: absolute;
+      top: 35px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--bg-glass-dark);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      color: var(--text-primary);
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-size: 9px;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 100;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-glass);
+    }
+
+    .printer-marker:hover .printer-marker-label {
+      opacity: 1;
+    }
+
+    /* Masquer les labels en mode édition pour faciliter la sélection */
+    body.edit-mode .printer-marker-label {
+      display: none !important;
+    }
+
+    .printer-marker.dragging {
+      opacity: 0.7;
+      z-index: 1000;
+      cursor: grabbing !important;
+    }
+
+    .printer-marker.dragging .printer-marker-icon {
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      transform: scale(1.1);
+    }
+
+    /* Zoom Controls */
+    .zoom-controls {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      z-index: 100;
+    }
+
+    .zoom-btn {
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      background: var(--bg-glass-dark);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: var(--text-primary);
+      font-size: 20px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .zoom-btn:hover {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+      transform: scale(1.05);
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .zoom-level {
+      text-align: center;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      padding: 4px 0;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.5);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: var(--bg-glass-dark);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 28px;
+      width: 90%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow-y: auto;
+      border: 1px solid var(--border-glass);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .modal-header h2 {
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 1.3em;
+    }
+
+    .modal-close {
+      background: var(--bg-glass);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      font-size: 20px;
+      cursor: pointer;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .modal-close:hover {
+      background: var(--danger);
+      color: white;
+      border-color: var(--danger);
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text-secondary);
+      font-size: 0.9em;
+      font-weight: 500;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      background: var(--bg-glass);
+      color: var(--text-primary);
+      font-size: 14px;
+      font-family: inherit;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px var(--accent-light);
+      background: white;
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: var(--text-muted);
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      margin-top: 24px;
+    }
+
+    /* Toast Notifications */
+    .toast-container {
+      position: fixed;
+      top: 80px;
+      right: 20px;
+      z-index: 2000;
+    }
+
+    .toast {
+      background: var(--bg-glass-dark);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border-radius: 12px;
+      padding: 14px 20px;
+      margin-bottom: 10px;
+      animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid var(--border-subtle);
+      border-left: 4px solid var(--accent);
+      color: var(--text-primary);
+      font-weight: 500;
+      box-shadow: var(--shadow-glass);
+    }
+
+    .toast.success {
+      border-left-color: var(--success);
+    }
+
+    .toast.error {
+      border-left-color: var(--danger);
+    }
+
+    .toast.warning {
+      border-left-color: var(--warning);
+    }
+
+    .toast.info {
+      border-left-color: var(--accent);
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    /* Status Summary */
+    .status-summary {
+      display: flex;
+      gap: 16px;
+      padding: 10px 16px;
+      background: var(--bg-glass);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .status-count {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.9em;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    .status-dot.online { background: var(--success); }
+    .status-dot.offline { background: var(--danger); }
+    .status-dot.unknown { background: var(--warning); }
+
+    /* Checkbox styling */
+    .form-group input[type="checkbox"] {
+      width: auto;
+      margin-right: 8px;
+      accent-color: var(--accent);
+    }
+
+    /* HR styling */
+    hr {
+      border: none;
+      border-top: 1px solid var(--border-subtle);
+      margin: 24px 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        position: absolute;
+        z-index: 50;
+        height: 50%;
+        bottom: 0;
+        transform: translateY(100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border-radius: 20px 20px 0 0;
+        border-right: none;
+      }
+
+      .sidebar.open {
+        transform: translateY(0);
+      }
+
+      .toggle-sidebar {
+        display: block;
+      }
+
+      .header-controls {
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .btn {
+        padding: 8px 14px;
+        font-size: 0.85em;
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Moniteur Imprimantes HP Bureautique <span>v1.31</span></h1>
+    <div class="header-controls">
+      <div class="status-summary">
+        <div class="status-count">
+          <span class="status-dot online"></span>
+          <span id="countOnline">0</span> En ligne
+        </div>
+        <div class="status-count">
+          <span class="status-dot offline"></span>
+          <span id="countOffline">0</span> Hors ligne
+        </div>
+        <div class="status-count">
+          <span class="status-dot unknown"></span>
+          <span id="countUnknown">0</span> Inconnu
+        </div>
+      </div>
+      <button class="btn btn-secondary" id="refreshBtn" onclick="toggleAutoRefresh()">
+        <span id="refreshIcon">&#x1F504;</span> <span id="refreshText">OFF</span>
+      </button>
+      <button class="btn btn-secondary" id="forceRefreshBtn" onclick="forceRefresh()" title="Rafraîchissement forcé (vide le cache)">
+        &#x26A1;
+      </button>
+      <button class="btn btn-secondary" onclick="openAlertSettings()">&#x26A0;&#xFE0F;</button>
+      <button class="btn btn-secondary" onclick="openImportModal()">&#x1F4E5;</button>
+      <button class="btn btn-secondary" id="editModeBtn" onclick="toggleEditMode()">&#x1F512;</button>
+      <button class="btn btn-primary" onclick="openAddPrinterModal()">+</button>
+    </div>
+  </div>
+
+  <div class="main-container">
+    <div class="sidebar">
+      <div class="sidebar-header">
+        Liste des Imprimantes
+      </div>
+      <div class="printer-list" id="printerList">
+        <!-- Populated dynamically -->
+      </div>
+    </div>
+
+    <div class="floor-plan-container" id="floorPlanContainer">
+      <!-- Vue 2D -->
+      <div class="floor-plan" id="floorPlan">
+        <div class="floor-plan-grid"></div>
+        <!-- Printer markers will be added here -->
+      </div>
+
+      <!-- Controles zoom -->
+      <div class="zoom-controls" id="controls2D">
+        <button class="zoom-btn" onclick="zoomIn()">+</button>
+        <div class="zoom-level" id="zoomLevel">100%</div>
+        <button class="zoom-btn" onclick="zoomOut()">-</button>
+        <button class="zoom-btn" onclick="resetView()">&#x21BA;</button>
+      </div>
+    </div>
+
+    <div class="sidebar-right">
+      <div class="sidebar-right-header">Modeles</div>
+      <div id="modelCards"></div>
+    </div>
+  </div>
+
+  <!-- Add/Edit Printer Modal -->
+  <div class="modal" id="printerModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modalTitle">Ajouter une Imprimante</h2>
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+      </div>
+      <form id="printerForm" onsubmit="savePrinter(event)">
+        <input type="hidden" id="printerId">
+        <div class="form-group">
+          <label for="printerName">Nom de l'imprimante</label>
+          <input type="text" id="printerName" required placeholder="Ex: ZT410-Expedition-01">
+        </div>
+        <div class="form-group">
+          <label for="printerIP">Adresse IP</label>
+          <input type="text" id="printerIP" required placeholder="Ex: 192.168.1.101"
+                 pattern="^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$">
+        </div>
+        <div class="form-group">
+          <label for="printerModel">Modele</label>
+          <select id="printerModel" required>
+            <option value="">Selectionnez un modele</option>
+            <option value="110PAX4">110PAX4 - Haute performance</option>
+            <option value="Z4M">Z4M - Format moyen</option>
+            <option value="Z6M">Z6M - Grand format</option>
+            <option value="Z6MPlus">Z6MPlus - Grand format Plus</option>
+            <option value="ZE500">ZE500 - Moteur d'impression</option>
+            <option value="ZE500L4">ZE500L4 - Moteur d'impression 4 pouces</option>
+            <option value="ZM400">ZM400 - Moyenne gamme</option>
+            <option value="ZM600">ZM600 - Haute performance</option>
+            <option value="ZT230">ZT230 - Compacte</option>
+            <option value="ZT410">ZT410 - Industrielle 4 pouces</option>
+            <option value="ZT411">ZT411 - Industrielle 4 pouces (nouvelle gen.)</option>
+            <option value="ZT420">ZT420 - Industrielle 6 pouces</option>
+            <option value="ZT421">ZT421 - Industrielle 6 pouces (nouvelle gen.)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="printerLocation">Emplacement</label>
+          <input type="text" id="printerLocation" required placeholder="Ex: Zone Expedition">
+        </div>
+        <div class="form-group">
+          <label for="printerSerial">Numero de serie</label>
+          <input type="text" id="printerSerial" required placeholder="Ex: SGD123456789">
+        </div>
+        <div class="form-group">
+          <label for="printerMac">Adresse MAC</label>
+          <input type="text" id="printerMac" required placeholder="Ex: 00:1A:2B:3C:4D:5E">
+        </div>
+        <div class="form-group">
+          <label for="printerX">Position X sur le plan</label>
+          <input type="number" id="printerX" required min="0" value="100">
+        </div>
+        <div class="form-group">
+          <label for="printerY">Position Y sur le plan</label>
+          <input type="number" id="printerY" required min="0" value="100">
+        </div>
+        <div class="form-group">
+          <label for="printerDescription">Description (optionnel)</label>
+          <textarea id="printerDescription" rows="2" placeholder="Description de l'imprimante..."></textarea>
+        </div>
+        <div class="form-group">
+          <label for="printerContractEndDate">Date de fin de contrat maintenance</label>
+          <input type="date" id="printerContractEndDate" placeholder="Date de fin de contrat">
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeModal()">Annuler</button>
+          <button type="button" class="btn btn-secondary" id="deleteBtn" onclick="deletePrinter()" style="display:none;">Supprimer</button>
+          <button type="submit" class="btn btn-primary">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Alert Settings Modal -->
+  <div class="modal" id="alertModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>&#x26A0;&#xFE0F; Configuration des Alertes</h2>
+        <button class="modal-close" onclick="closeAlertModal()">&times;</button>
+      </div>
+      <div id="alertSettingsContent">
+        <div class="form-group">
+          <label>
+            <input type="checkbox" id="alertEnabled" checked>
+            Activer les alertes par email
+          </label>
+        </div>
+        <div class="form-group">
+          <label>
+            <input type="checkbox" id="alertOnOffline" checked>
+            Alerte quand une imprimante passe HORS LIGNE
+          </label>
+        </div>
+        <div class="form-group">
+          <label>
+            <input type="checkbox" id="alertOnBackOnline" checked>
+            Alerte quand une imprimante revient EN LIGNE
+          </label>
+        </div>
+        <div class="form-group">
+          <label for="cooldownMinutes">Delai entre alertes (minutes)</label>
+          <input type="number" id="cooldownMinutes" value="5" min="1" max="60">
+        </div>
+        <hr>
+        <div class="form-group">
+          <label>Destinataires des alertes</label>
+          <div id="recipientsList" style="margin: 10px 0;"></div>
+          <div style="display: flex; gap: 10px;">
+            <input type="email" id="newRecipientEmail" placeholder="email@exemple.com" style="flex: 1;">
+            <button type="button" class="btn btn-primary" onclick="addRecipient()">Ajouter</button>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeAlertModal()">Fermer</button>
+          <button type="button" class="btn btn-secondary" onclick="testAlertEmail()">Tester</button>
+          <button type="button" class="btn btn-primary" onclick="saveAlertSettings()">Enregistrer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Import CSV Modal -->
+  <div class="modal" id="importModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>&#x1F4E5; Import CSV</h2>
+        <button class="modal-close" onclick="closeImportModal()">&times;</button>
+      </div>
+      <div id="importContent">
+        <div style="background: var(--warning-light); padding: 16px; border-radius: 12px; margin-bottom: 16px; border: 1px solid var(--warning);">
+          <p style="color: var(--warning); margin-bottom: 8px; font-weight: 600;">&#x26A0;&#xFE0F; Attention:</p>
+          <p style="color: var(--text-secondary); font-size: 0.9em;">L'import va <strong>remplacer toutes les imprimantes existantes</strong>. Assurez-vous d'avoir une sauvegarde si necessaire.</p>
+        </div>
+
+        <div class="form-group">
+          <label>Format CSV attendu:</label>
+          <div style="background: var(--bg-glass); padding: 12px; border-radius: 10px; font-family: monospace; font-size: 0.85em; overflow-x: auto; border: 1px solid var(--border-subtle);">
+            <span style="color: var(--accent); font-weight: 600;">name,ip,model,location,serial,mac,x,y,description</span><br>
+            <span style="color: var(--text-muted);">ZT410-Expedition-01,192.168.1.101,ZT410,Zone Expedition,SGD123456,00:1A:2B:3C:4D:5E,200,150,Ligne 1</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Modeles valides:</label>
+          <div style="color: var(--text-secondary); font-size: 0.85em;">
+            ZT410, ZT411, ZT420, ZT421, ZT230, ZM600, ZM400, Z6M, Z4M, ZE500
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="csvFile">Fichier CSV</label>
+          <input type="file" id="csvFile" accept=".csv,.txt" style="display: none;" onchange="handleFileSelect(event)">
+          <div style="display: flex; gap: 10px;">
+            <button type="button" class="btn btn-secondary" onclick="document.getElementById('csvFile').click()">Choisir un fichier</button>
+            <span id="selectedFileName" style="color: var(--text-muted); align-self: center;">Aucun fichier selectionne</span>
+          </div>
+        </div>
+
+        <div class="form-group" id="csvPreview" style="display: none;">
+          <label>Apercu (5 premieres lignes):</label>
+          <div id="csvPreviewContent" style="background: var(--bg-glass); padding: 12px; border-radius: 10px; font-family: monospace; font-size: 0.8em; max-height: 150px; overflow-y: auto; border: 1px solid var(--border-subtle);"></div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="downloadTemplate()">&#x1F4C4; Template</button>
+          <button type="button" class="btn btn-secondary" onclick="exportCurrentPrinters()">&#x1F4E4; Exporter</button>
+          <button type="button" class="btn btn-secondary" onclick="closeImportModal()">Annuler</button>
+          <button type="button" class="btn btn-primary" id="importBtn" onclick="executeImport()" disabled>Importer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script>
+    // State
+    let printers = [];
+    let scale = 1;
+    let translateX = 0;
+    let translateY = 0;
+    let isDragging = false;
+    let startX, startY;
+    let floorPlanWidth = 1200;
+    let floorPlanHeight = 800;
+
+    // Auto-refresh state
+    let autoRefreshEnabled = false;
+    let autoRefreshInterval = null;
+    let countdownInterval = null;
+    let countdownSeconds = 60;
+
+    // Edit mode state
+    let editModeEnabled = false;
+
+    // Grille magnétique (snap to grid)
+    const gridSize = 10; // Taille de la grille en pixels
+
+    // Printer images cache
+    let printerImages = {};
+
+    // Calcul de l'etat du contrat de maintenance
+    function getContractStatus(contractEndDate) {
+      if (!contractEndDate) {
+        return { status: 'no-contract', label: 'Pas de contrat', title: 'Aucun contrat de maintenance' };
+      }
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const endDate = new Date(contractEndDate);
+      endDate.setHours(0, 0, 0, 0);
+
+      const diffTime = endDate - today;
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      if (diffDays < 0) {
+        return {
+          status: 'expired',
+          label: 'Expire',
+          title: `Contrat expire depuis ${Math.abs(diffDays)} jour(s) (${endDate.toLocaleDateString('fr-FR')})`
+        };
+      } else if (diffDays <= 60) {
+        return {
+          status: 'expiring',
+          label: 'Bientot',
+          title: `Contrat expire dans ${diffDays} jour(s) (${endDate.toLocaleDateString('fr-FR')})`
+        };
+      } else {
+        return {
+          status: 'valid',
+          label: 'Valide',
+          title: `Contrat valide jusqu'au ${endDate.toLocaleDateString('fr-FR')} (${diffDays} jours)`
+        };
+      }
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      initFloorPlan();
+      loadPrinters();
+      loadPrinterImages();
+      setupDragAndZoom();
+    });
+
+    // Load printer images with localStorage cache
+    function loadPrinterImages() {
+      // Try to load from cache first
+      const cached = localStorage.getItem('printerImagesCache');
+      if (cached) {
+        try {
+          printerImages = JSON.parse(cached);
+          console.log('Images chargees depuis cache');
+          renderPrinterList();
+          updateModelCounts();
+        } catch (e) {
+          console.error('Erreur cache:', e);
+        }
+      }
+
+      // Load from server in background to update cache
+      google.script.run
+        .withSuccessHandler(function(images) {
+          printerImages = images || {};
+          console.log('Images chargees depuis serveur');
+          // Save to cache
+          try {
+            localStorage.setItem('printerImagesCache', JSON.stringify(printerImages));
+          } catch (e) {
+            console.error('Erreur sauvegarde cache:', e);
+          }
+          // Refresh display with images
+          renderPrinterList();
+          updateModelCounts();
+        })
+        .withFailureHandler(function(err) {
+          console.error('Erreur chargement images:', err);
+        })
+        .getPrinterImages();
+    }
+
+    // Toggle auto-refresh
+    function toggleAutoRefresh() {
+      if (autoRefreshEnabled) {
+        // Si deja actif, faire un refresh immediat et reset le compteur
+        countdownSeconds = 60;
+        loadPrinters();
+        showToast('Actualisation manuelle', 'success');
+      } else {
+        // Activer l'auto-refresh
+        autoRefreshEnabled = true;
+        loadPrinters();
+        showToast('Auto-refresh active (1 min)', 'success');
+        startAutoRefresh();
+      }
+    }
+
+    // Desactiver l'auto-refresh (double-clic)
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('refreshBtn').addEventListener('dblclick', () => {
+        if (autoRefreshEnabled) {
+          autoRefreshEnabled = false;
+          stopAutoRefresh();
+          showToast('Auto-refresh desactive', 'info');
+        }
+      });
+    });
+
+    // Start auto-refresh with countdown
+    function startAutoRefresh() {
+      countdownSeconds = 60;
+      updateRefreshButton();
+
+      // Countdown every second
+      countdownInterval = setInterval(() => {
+        countdownSeconds--;
+        updateRefreshButton();
+
+        if (countdownSeconds <= 0) {
+          countdownSeconds = 60;
+          loadPrinters();
+          showToast('Actualisation automatique', 'success');
+        }
+      }, 1000);
+    }
+
+    // Stop auto-refresh
+    function stopAutoRefresh() {
+      if (countdownInterval) {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+      }
+      updateRefreshButton();
+    }
+
+    // Update refresh button display
+    function updateRefreshButton() {
+      const btn = document.getElementById('refreshBtn');
+      const icon = document.getElementById('refreshIcon');
+      const text = document.getElementById('refreshText');
+
+      if (autoRefreshEnabled) {
+        btn.classList.remove('btn-secondary');
+        btn.classList.add('btn-primary');
+        icon.textContent = '\u{1F504}';
+        text.textContent = countdownSeconds + 's';
+      } else {
+        btn.classList.remove('btn-primary');
+        btn.classList.add('btn-secondary');
+        icon.textContent = '\u{1F504}';
+        text.textContent = 'OFF';
+      }
+    }
+
+    // Toggle edit mode
+    function toggleEditMode() {
+      editModeEnabled = !editModeEnabled;
+      updateEditModeButton();
+      updateMarkersEditMode();
+
+      // Ajouter/retirer la classe edit-mode sur le body pour masquer les labels
+      if (editModeEnabled) {
+        document.body.classList.add('edit-mode');
+      } else {
+        document.body.classList.remove('edit-mode');
+      }
+    }
+
+    // Update edit mode button display
+    function updateEditModeButton() {
+      const btn = document.getElementById('editModeBtn');
+      if (editModeEnabled) {
+        btn.classList.remove('btn-secondary');
+        btn.classList.add('btn-primary');
+        btn.innerHTML = '&#x1F513;';
+      } else {
+        btn.classList.remove('btn-primary');
+        btn.classList.add('btn-secondary');
+        btn.innerHTML = '&#x1F512;';
+      }
+    }
+
+    // Update markers cursor based on edit mode
+    function updateMarkersEditMode() {
+      const markers = document.querySelectorAll('.printer-marker');
+      markers.forEach(marker => {
+        if (editModeEnabled) {
+          marker.style.cursor = 'move';
+        } else {
+          marker.style.cursor = 'pointer';
+        }
+      });
+    }
+
+    // Initialize floor plan
+    function initFloorPlan() {
+      google.script.run
+        .withSuccessHandler(function(config) {
+          floorPlanWidth = config.width || 1200;
+          floorPlanHeight = config.height || 800;
+          const floorPlan = document.getElementById('floorPlan');
+          floorPlan.style.width = floorPlanWidth + 'px';
+          floorPlan.style.height = floorPlanHeight + 'px';
+          centerFloorPlan();
+
+          // Charger l'image du plan
+          google.script.run
+            .withSuccessHandler(function(base64) {
+              if (base64) {
+                const img = document.createElement('img');
+                img.src = 'data:image/png;base64,' + base64;
+                img.className = 'floor-plan-image';
+                floorPlan.insertBefore(img, floorPlan.firstChild);
+              }
+            })
+            .withFailureHandler(handleError)
+            .getFloorPlanImage();
+        })
+        .withFailureHandler(function(err) {
+          handleError(err);
+          const floorPlan = document.getElementById('floorPlan');
+          floorPlan.style.width = floorPlanWidth + 'px';
+          floorPlan.style.height = floorPlanHeight + 'px';
+          centerFloorPlan();
+        })
+        .getFloorPlanConfig();
+    }
+
+    // Center floor plan in container
+    function centerFloorPlan() {
+      const container = document.getElementById('floorPlanContainer');
+      translateX = (container.clientWidth - floorPlanWidth * scale) / 2;
+      translateY = (container.clientHeight - floorPlanHeight * scale) / 2;
+      updateTransform();
+    }
+
+    // Update transform
+    function updateTransform() {
+      const floorPlan = document.getElementById('floorPlan');
+      floorPlan.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+      document.getElementById('zoomLevel').textContent = Math.round(scale * 100) + '%';
+    }
+
+    // Setup drag and zoom
+    function setupDragAndZoom() {
+      const container = document.getElementById('floorPlanContainer');
+      const floorPlan = document.getElementById('floorPlan');
+
+      // Mouse drag
+      floorPlan.addEventListener('mousedown', (e) => {
+        if (e.target.classList.contains('printer-marker') ||
+            e.target.closest('.printer-marker')) return;
+        isDragging = true;
+        startX = e.clientX - translateX;
+        startY = e.clientY - translateY;
+        floorPlan.style.cursor = 'grabbing';
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        translateX = e.clientX - startX;
+        translateY = e.clientY - startY;
+        updateTransform();
+      });
+
+      document.addEventListener('mouseup', () => {
+        isDragging = false;
+        document.getElementById('floorPlan').style.cursor = 'grab';
+      });
+
+      // Mouse wheel zoom
+      container.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const delta = e.deltaY > 0 ? -0.1 : 0.1;
+        const newScale = Math.min(Math.max(scale + delta, 0.25), 4);
+
+        // Zoom towards mouse position
+        const rect = container.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+
+        const ratio = newScale / scale;
+        translateX = mouseX - (mouseX - translateX) * ratio;
+        translateY = mouseY - (mouseY - translateY) * ratio;
+
+        scale = newScale;
+        updateTransform();
+      });
+
+      // Touch support
+      let touchStartDist = 0;
+      let touchStartScale = 1;
+
+      floorPlan.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 2) {
+          touchStartDist = Math.hypot(
+            e.touches[0].clientX - e.touches[1].clientX,
+            e.touches[0].clientY - e.touches[1].clientY
+          );
+          touchStartScale = scale;
+        } else if (e.touches.length === 1) {
+          isDragging = true;
+          startX = e.touches[0].clientX - translateX;
+          startY = e.touches[0].clientY - translateY;
+        }
+      });
+
+      floorPlan.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+        if (e.touches.length === 2) {
+          const dist = Math.hypot(
+            e.touches[0].clientX - e.touches[1].clientX,
+            e.touches[0].clientY - e.touches[1].clientY
+          );
+          scale = Math.min(Math.max(touchStartScale * (dist / touchStartDist), 0.25), 4);
+          updateTransform();
+        } else if (e.touches.length === 1 && isDragging) {
+          translateX = e.touches[0].clientX - startX;
+          translateY = e.touches[0].clientY - startY;
+          updateTransform();
+        }
+      });
+
+      floorPlan.addEventListener('touchend', () => {
+        isDragging = false;
+      });
+    }
+
+    // Zoom controls
+    function zoomIn() {
+      scale = Math.min(scale + 0.25, 4);
+      updateTransform();
+    }
+
+    function zoomOut() {
+      scale = Math.max(scale - 0.25, 0.25);
+      updateTransform();
+    }
+
+    function resetView() {
+      scale = 1;
+      centerFloorPlan();
+    }
+
+    // Load printers from server
+    function loadPrinters() {
+      google.script.run
+        .withSuccessHandler(handlePrintersLoaded)
+        .withFailureHandler(handleError)
+        .getPrinters();
+    }
+
+    // Handle printers loaded
+    function handlePrintersLoaded(data) {
+      printers = data;
+      renderPrinterList();
+      renderPrinterMarkers();
+      updateStatusCounts();
+      updateMarkersEditMode();
+    }
+
+    // Render printer list in sidebar
+    function renderPrinterList() {
+      const list = document.getElementById('printerList');
+      list.innerHTML = '';
+
+      printers.forEach(printer => {
+        const status = printer.status || 'unknown';
+        const item = document.createElement('div');
+        item.className = `printer-item ${status}`;
+
+        // Get printer image or fallback to emoji
+        const imageUrl = printerImages[printer.model];
+        const imageHtml = imageUrl
+          ? `<img src="${imageUrl}" alt="${printer.model}" class="printer-item-image">`
+          : `<div class="printer-item-image-placeholder">&#x1F5A8;&#xFE0F;</div>`;
+
+        // Status text
+        const statusText = status === 'online' ? 'En ligne' : status === 'offline' ? 'Hors ligne' : 'Inconnu';
+
+        // Contract badge
+        const contractInfo = getContractStatus(printer.contractEndDate);
+        const contractBadgeInline = `<span class="contract-badge-inline ${contractInfo.status}" title="${contractInfo.title}">C</span>`;
+
+        item.innerHTML = `
+          <div class="printer-item-content">
+            <div class="printer-item-image-container">
+              ${imageHtml}
+              <span class="printer-status-badge status-${status}">${statusText}</span>
+            </div>
+            <div class="printer-item-details">
+              <div class="printer-item-header">
+                <div class="printer-name">${printer.name}${contractBadgeInline}</div>
+                <div class="printer-actions">
+                  <button class="printer-action-btn edit" title="Modifier">&#x270F;&#xFE0F;</button>
+                  <button class="printer-action-btn delete" title="Supprimer">&#x1F5D1;&#xFE0F;</button>
+                </div>
+              </div>
+              <div class="printer-info">${printer.model} - ${printer.ip}</div>
+              <div class="printer-info">${printer.location}</div>
+            </div>
+          </div>
+        `;
+
+        // Click on item to focus on printer
+        item.onclick = (e) => {
+          if (!e.target.classList.contains('printer-action-btn')) {
+            focusOnPrinter(printer);
+          }
+        };
+
+        // Edit button
+        item.querySelector('.edit').onclick = (e) => {
+          e.stopPropagation();
+          openEditPrinterModal(printer);
+        };
+
+        // Delete button
+        item.querySelector('.delete').onclick = (e) => {
+          e.stopPropagation();
+          confirmDeletePrinter(printer);
+        };
+
+        list.appendChild(item);
+      });
+    }
+
+    // Confirm and delete printer
+    function confirmDeletePrinter(printer) {
+      if (confirm(`Supprimer l'imprimante "${printer.name}" ?`)) {
+        google.script.run
+          .withSuccessHandler(() => {
+            showToast('Imprimante supprimee', 'success');
+            loadPrinters();
+          })
+          .withFailureHandler(handleError)
+          .removePrinter(printer.id);
+      }
+    }
+
+    // Render printer markers on floor plan
+    function renderPrinterMarkers() {
+      const floorPlan = document.getElementById('floorPlan');
+
+      // Remove existing markers
+      floorPlan.querySelectorAll('.printer-marker').forEach(m => m.remove());
+
+      printers.forEach(printer => {
+        const status = printer.status || 'unknown';
+        const marker = document.createElement('div');
+        marker.className = `printer-marker ${status}`;
+        marker.style.left = printer.x + 'px';
+        marker.style.top = printer.y + 'px';
+        marker.dataset.printerId = printer.id;
+
+        // Détecter si c'est une imprimante WiFi (IP commence par 10.7.23)
+        const isWifi = printer.ip && printer.ip.startsWith('10.7.23');
+        const wifiBadge = isWifi ? `<span class="wifi-badge ${status}" title="WiFi">&#x1F4F6;</span>` : '';
+
+        // Badge contrat de maintenance
+        const contractInfo = getContractStatus(printer.contractEndDate);
+        const contractBadge = `<span class="contract-badge ${contractInfo.status}" title="${contractInfo.title}">C</span>`;
+
+        marker.innerHTML = `
+          <div class="printer-marker-icon">&#x1F5A8;&#xFE0F;</div>
+          ${contractBadge}
+          ${wifiBadge}
+          <div class="printer-marker-name">${printer.name}</div>
+          <div class="printer-marker-label">
+            <strong>${printer.model}</strong><br>
+            ${printer.ip}
+          </div>
+        `;
+
+        // Setup drag and drop
+        setupMarkerDrag(marker, printer);
+
+        floorPlan.appendChild(marker);
+      });
+    }
+
+    // Setup drag and drop for a marker
+    function setupMarkerDrag(marker, printer) {
+      let isDraggingMarker = false;
+      let markerStartX, markerStartY;
+      let markerOffsetX, markerOffsetY;
+
+      marker.addEventListener('mousedown', (e) => {
+        // Only allow dragging in edit mode
+        if (!editModeEnabled) return;
+
+        e.stopPropagation();
+        isDraggingMarker = true;
+        marker.classList.add('dragging');
+
+        const rect = marker.getBoundingClientRect();
+        const floorPlanRect = document.getElementById('floorPlan').getBoundingClientRect();
+
+        // Calculate offset from mouse to marker center
+        markerOffsetX = e.clientX - rect.left - rect.width / 2;
+        markerOffsetY = e.clientY - rect.top - rect.height / 2;
+        markerStartX = printer.x;
+        markerStartY = printer.y;
+
+        document.addEventListener('mousemove', onMarkerDrag);
+        document.addEventListener('mouseup', onMarkerDragEnd);
+      });
+
+      function onMarkerDrag(e) {
+        if (!isDraggingMarker) return;
+
+        const floorPlan = document.getElementById('floorPlan');
+        const floorPlanRect = floorPlan.getBoundingClientRect();
+
+        // Calculate new position relative to floor plan
+        let newX = (e.clientX - floorPlanRect.left - markerOffsetX) / scale;
+        let newY = (e.clientY - floorPlanRect.top - markerOffsetY) / scale;
+
+        // Snap to grid (grille magnétique)
+        newX = Math.round(newX / gridSize) * gridSize;
+        newY = Math.round(newY / gridSize) * gridSize;
+
+        // Clamp to floor plan bounds
+        newX = Math.max(25, Math.min(floorPlanWidth - 25, newX));
+        newY = Math.max(25, Math.min(floorPlanHeight - 25, newY));
+
+        marker.style.left = newX + 'px';
+        marker.style.top = newY + 'px';
+
+        // Update printer object
+        printer.x = Math.round(newX);
+        printer.y = Math.round(newY);
+      }
+
+      function onMarkerDragEnd(e) {
+        if (!isDraggingMarker) return;
+        isDraggingMarker = false;
+        marker.classList.remove('dragging');
+
+        document.removeEventListener('mousemove', onMarkerDrag);
+        document.removeEventListener('mouseup', onMarkerDragEnd);
+
+        // Save new position if changed
+        if (printer.x !== markerStartX || printer.y !== markerStartY) {
+          savePrinterPosition(printer);
+        }
+      }
+
+      // Double-click to edit
+      marker.addEventListener('dblclick', (e) => {
+        e.stopPropagation();
+        openEditPrinterModal(printer);
+      });
+    }
+
+    // Save printer position after drag
+    function savePrinterPosition(printer) {
+      google.script.run
+        .withSuccessHandler(() => showToast(`${printer.name} deplace`, 'success'))
+        .withFailureHandler(handleError)
+        .updatePrinter(printer.id, { x: printer.x, y: printer.y });
+    }
+
+    // Update status counts
+    function updateStatusCounts() {
+      const counts = { online: 0, offline: 0, unknown: 0 };
+      printers.forEach(p => {
+        const status = p.status || 'unknown';
+        counts[status]++;
+      });
+
+      document.getElementById('countOnline').textContent = counts.online;
+      document.getElementById('countOffline').textContent = counts.offline;
+      document.getElementById('countUnknown').textContent = counts.unknown;
+
+      updateModelCounts();
+    }
+
+    // Update model counts
+    function updateModelCounts() {
+      const modelStats = {};
+      printers.forEach(p => {
+        const model = p.model || 'Inconnu';
+        const status = p.status || 'unknown';
+        if (!modelStats[model]) {
+          modelStats[model] = { online: 0, offline: 0 };
+        }
+        if (status === 'online') {
+          modelStats[model].online++;
+        } else if (status === 'offline') {
+          modelStats[model].offline++;
+        }
+      });
+
+      const container = document.getElementById('modelCards');
+      container.innerHTML = '';
+
+      Object.keys(modelStats).sort().forEach(model => {
+        const stats = modelStats[model];
+        const card = document.createElement('div');
+        card.className = 'model-card';
+
+        // Get model image or fallback to emoji
+        const imageUrl = printerImages[model];
+        const imageContent = imageUrl
+          ? `<img src="${imageUrl}" alt="${model}" class="model-image-img">`
+          : `<span class="model-image-emoji">&#x1F5A8;&#xFE0F;</span>`;
+
+        card.innerHTML = `
+          <div class="model-image">
+            ${imageContent}
+            <span class="model-badge online">${stats.online}</span>
+            <span class="model-badge offline">${stats.offline}</span>
+          </div>
+          <div class="model-name">${model}</div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Focus on a printer
+    function focusOnPrinter(printer) {
+      const container = document.getElementById('floorPlanContainer');
+      scale = 2;
+      translateX = container.clientWidth / 2 - printer.x * scale;
+      translateY = container.clientHeight / 2 - printer.y * scale;
+      updateTransform();
+    }
+
+    // Refresh status
+    function refreshStatus() {
+      showToast('Actualisation en cours...', 'info');
+      loadPrinters();
+    }
+
+    // Force refresh - clear all caches and reload everything
+    function forceRefresh() {
+      const btn = document.getElementById('forceRefreshBtn');
+      btn.disabled = true;
+      btn.innerHTML = '&#x23F3; Chargement...';
+
+      showToast('Rafraîchissement forcé en cours...', 'info');
+
+      // Clear localStorage cache
+      try {
+        localStorage.removeItem('printerImagesCache');
+        console.log('Cache images vidé');
+      } catch (e) {
+        console.error('Erreur vidage cache:', e);
+      }
+
+      // Reset printer images
+      printerImages = {};
+
+      // Reload everything from server
+      google.script.run
+        .withSuccessHandler(function(data) {
+          printers = data;
+          console.log('Imprimantes rechargées:', printers.length);
+
+          // Reload images from server (bypass cache)
+          google.script.run
+            .withSuccessHandler(function(images) {
+              printerImages = images || {};
+              console.log('Images rechargées depuis serveur');
+
+              // Save to cache
+              try {
+                localStorage.setItem('printerImagesCache', JSON.stringify(printerImages));
+              } catch (e) {
+                console.error('Erreur sauvegarde cache:', e);
+              }
+
+              // Render everything
+              renderPrinterList();
+              renderPrinterMarkers();
+              updateStatusCounts();
+              updateMarkersEditMode();
+
+              btn.disabled = false;
+              btn.innerHTML = '&#x26A1;';
+              showToast('Données rechargées avec succès!', 'success');
+            })
+            .withFailureHandler(function(err) {
+              console.error('Erreur chargement images:', err);
+              // Continue anyway with printer data
+              renderPrinterList();
+              renderPrinterMarkers();
+              updateStatusCounts();
+              updateMarkersEditMode();
+
+              btn.disabled = false;
+              btn.innerHTML = '&#x26A1;';
+              showToast('Données rechargées (sans images)', 'warning');
+            })
+            .getPrinterImages();
+        })
+        .withFailureHandler(function(err) {
+          handleError(err);
+          btn.disabled = false;
+          btn.innerHTML = '&#x26A1;';
+        })
+        .getPrinters();
+    }
+
+    // Modal functions
+    function openAddPrinterModal() {
+      document.getElementById('modalTitle').textContent = 'Ajouter une Imprimante';
+      document.getElementById('printerForm').reset();
+      document.getElementById('printerId').value = '';
+      document.getElementById('deleteBtn').style.display = 'none';
+      document.getElementById('printerModal').classList.add('active');
+    }
+
+    function openEditPrinterModal(printer) {
+      document.getElementById('modalTitle').textContent = 'Modifier l\'Imprimante';
+      document.getElementById('printerId').value = printer.id;
+      document.getElementById('printerName').value = printer.name;
+      document.getElementById('printerIP').value = printer.ip;
+      document.getElementById('printerModel').value = printer.model;
+      document.getElementById('printerLocation').value = printer.location;
+      document.getElementById('printerSerial').value = printer.serial || '';
+      document.getElementById('printerMac').value = printer.mac || '';
+      document.getElementById('printerX').value = printer.x;
+      document.getElementById('printerY').value = printer.y;
+      document.getElementById('printerDescription').value = printer.description || '';
+      document.getElementById('printerContractEndDate').value = printer.contractEndDate || '';
+      document.getElementById('deleteBtn').style.display = 'block';
+      document.getElementById('printerModal').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('printerModal').classList.remove('active');
+    }
+
+    // Save printer
+    function savePrinter(event) {
+      event.preventDefault();
+
+      const printerId = document.getElementById('printerId').value;
+      const printerData = {
+        name: document.getElementById('printerName').value,
+        ip: document.getElementById('printerIP').value,
+        model: document.getElementById('printerModel').value,
+        location: document.getElementById('printerLocation').value,
+        serial: document.getElementById('printerSerial').value,
+        mac: document.getElementById('printerMac').value,
+        x: parseInt(document.getElementById('printerX').value),
+        y: parseInt(document.getElementById('printerY').value),
+        description: document.getElementById('printerDescription').value,
+        contractEndDate: document.getElementById('printerContractEndDate').value,
+        status: 'unknown'
+      };
+
+      if (printerId) {
+        google.script.run
+          .withSuccessHandler(handleSaveSuccess)
+          .withFailureHandler(handleError)
+          .updatePrinter(printerId, printerData);
+      } else {
+        google.script.run
+          .withSuccessHandler(handleSaveSuccess)
+          .withFailureHandler(handleError)
+          .addPrinter(printerData);
+      }
+    }
+
+    // Delete printer
+    function deletePrinter() {
+      const printerId = document.getElementById('printerId').value;
+      if (!printerId) return;
+
+      if (confirm('Etes-vous sur de vouloir supprimer cette imprimante ?')) {
+        google.script.run
+          .withSuccessHandler(handleDeleteSuccess)
+          .withFailureHandler(handleError)
+          .removePrinter(printerId);
+      }
+    }
+
+    // Handle save success
+    function handleSaveSuccess(result) {
+      if (result.success) {
+        closeModal();
+        showToast('Imprimante enregistree avec succes!', 'success');
+        loadPrinters();
+      } else {
+        showToast(result.error || 'Erreur lors de l\'enregistrement', 'error');
+      }
+    }
+
+    // Handle delete success
+    function handleDeleteSuccess(result) {
+      if (result.success) {
+        closeModal();
+        showToast('Imprimante supprimee avec succes!', 'success');
+        loadPrinters();
+      } else {
+        showToast(result.error || 'Erreur lors de la suppression', 'error');
+      }
+    }
+
+    // Handle error
+    function handleError(error) {
+      showToast('Erreur: ' + error.message, 'error');
+    }
+
+    // Show toast notification
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.textContent = message;
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.remove();
+      }, 3000);
+    }
+
+    // ==================== GESTION DES ALERTES ====================
+
+    let alertConfig = {
+      enabled: true,
+      emailRecipients: [],
+      alertOnOffline: true,
+      alertOnBackOnline: true,
+      cooldownMinutes: 5
+    };
+
+    // Ouvrir les parametres d'alertes
+    function openAlertSettings() {
+      google.script.run
+        .withSuccessHandler((config) => {
+          alertConfig = config;
+          renderAlertSettings();
+          document.getElementById('alertModal').classList.add('active');
+        })
+        .withFailureHandler(handleError)
+        .getAlertConfig();
+    }
+
+    // Afficher les parametres actuels
+    function renderAlertSettings() {
+      document.getElementById('alertEnabled').checked = alertConfig.enabled;
+      document.getElementById('alertOnOffline').checked = alertConfig.alertOnOffline;
+      document.getElementById('alertOnBackOnline').checked = alertConfig.alertOnBackOnline;
+      document.getElementById('cooldownMinutes').value = alertConfig.cooldownMinutes;
+      renderRecipientsList();
+    }
+
+    // Afficher la liste des destinataires
+    function renderRecipientsList() {
+      const list = document.getElementById('recipientsList');
+      list.innerHTML = '';
+
+      if (alertConfig.emailRecipients.length === 0) {
+        list.innerHTML = '<div style="color: var(--text-muted); font-style: italic;">Aucun destinataire configure</div>';
+        return;
+      }
+
+      alertConfig.emailRecipients.forEach(email => {
+        const div = document.createElement('div');
+        div.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: var(--bg-glass); border-radius: 8px; margin-bottom: 6px; border: 1px solid var(--border-subtle);';
+        div.innerHTML = `
+          <span style="color: var(--text-primary);">${email}</span>
+          <button class="printer-action-btn delete" onclick="removeRecipient('${email}')">&#x1F5D1;&#xFE0F;</button>
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    // Ajouter un destinataire
+    function addRecipient() {
+      const input = document.getElementById('newRecipientEmail');
+      const email = input.value.trim();
+
+      if (!email || !email.includes('@')) {
+        showToast('Email invalide', 'error');
+        return;
+      }
+
+      if (alertConfig.emailRecipients.includes(email)) {
+        showToast('Email deja ajoute', 'error');
+        return;
+      }
+
+      // Sauvegarder immediatement sur le serveur
+      google.script.run
+        .withSuccessHandler((result) => {
+          alertConfig.emailRecipients = result.recipients;
+          input.value = '';
+          renderRecipientsList();
+          showToast('Destinataire ajoute et sauvegarde', 'success');
+        })
+        .withFailureHandler(handleError)
+        .addAlertRecipient(email);
+    }
+
+    // Supprimer un destinataire
+    function removeRecipient(email) {
+      // Supprimer immediatement sur le serveur
+      google.script.run
+        .withSuccessHandler((result) => {
+          alertConfig.emailRecipients = result.recipients;
+          renderRecipientsList();
+          showToast('Destinataire supprime', 'success');
+        })
+        .withFailureHandler(handleError)
+        .removeAlertRecipient(email);
+    }
+
+    // Sauvegarder les parametres d'alertes
+    function saveAlertSettings() {
+      alertConfig.enabled = document.getElementById('alertEnabled').checked;
+      alertConfig.alertOnOffline = document.getElementById('alertOnOffline').checked;
+      alertConfig.alertOnBackOnline = document.getElementById('alertOnBackOnline').checked;
+      alertConfig.cooldownMinutes = parseInt(document.getElementById('cooldownMinutes').value) || 5;
+
+      google.script.run
+        .withSuccessHandler(() => {
+          showToast('Configuration des alertes sauvegardee', 'success');
+          closeAlertModal();
+        })
+        .withFailureHandler(handleError)
+        .saveAlertConfig(alertConfig);
+    }
+
+    // Tester l'envoi d'email
+    function testAlertEmail() {
+      if (alertConfig.emailRecipients.length === 0) {
+        showToast('Ajoutez au moins un destinataire', 'error');
+        return;
+      }
+
+      const email = alertConfig.emailRecipients[0];
+      google.script.run
+        .withSuccessHandler((result) => {
+          if (result.success) {
+            showToast('Email de test envoye a ' + email, 'success');
+          } else {
+            showToast('Erreur: ' + result.error, 'error');
+          }
+        })
+        .withFailureHandler(handleError)
+        .testAlert(email);
+    }
+
+    // Fermer le modal des alertes
+    function closeAlertModal() {
+      document.getElementById('alertModal').classList.remove('active');
+    }
+
+    // ==================== IMPORT CSV ====================
+
+    let csvContent = null;
+
+    // Ouvrir le modal d'import
+    function openImportModal() {
+      csvContent = null;
+      document.getElementById('csvFile').value = '';
+      document.getElementById('selectedFileName').textContent = 'Aucun fichier selectionne';
+      document.getElementById('csvPreview').style.display = 'none';
+      document.getElementById('importBtn').disabled = true;
+      document.getElementById('importModal').classList.add('active');
+    }
+
+    // Fermer le modal d'import
+    function closeImportModal() {
+      document.getElementById('importModal').classList.remove('active');
+    }
+
+    // Gerer la selection de fichier
+    function handleFileSelect(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      document.getElementById('selectedFileName').textContent = file.name;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        csvContent = e.target.result;
+
+        // Afficher l'apercu
+        const lines = csvContent.trim().split(/\r?\n/).slice(0, 6);
+        const preview = lines.map((line, i) => {
+          const color = i === 0 ? 'var(--accent)' : 'var(--text-primary)';
+          return `<div style="color: ${color};">${escapeHtml(line)}</div>`;
+        }).join('');
+
+        document.getElementById('csvPreviewContent').innerHTML = preview;
+        document.getElementById('csvPreview').style.display = 'block';
+        document.getElementById('importBtn').disabled = false;
+      };
+      reader.readAsText(file);
+    }
+
+    // Echapper le HTML
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Executer l'import
+    function executeImport() {
+      if (!csvContent) {
+        showToast('Veuillez selectionner un fichier CSV', 'error');
+        return;
+      }
+
+      // Confirmation finale
+      const printerCount = printers.length;
+      const msg = printerCount > 0
+        ? `Cette action va SUPPRIMER les ${printerCount} imprimante(s) existante(s) et les remplacer par celles du CSV.\n\nContinuer ?`
+        : 'Importer les imprimantes depuis le CSV ?';
+
+      if (!confirm(msg)) {
+        return;
+      }
+
+      document.getElementById('importBtn').disabled = true;
+      document.getElementById('importBtn').textContent = 'Import en cours...';
+
+      google.script.run
+        .withSuccessHandler(handleImportResult)
+        .withFailureHandler((err) => {
+          handleError(err);
+          resetImportButton();
+        })
+        .importPrintersFromCSV(csvContent, true);
+    }
+
+    // Gerer le resultat de l'import
+    function handleImportResult(result) {
+      resetImportButton();
+
+      if (result.success) {
+        showToast(result.message, 'success');
+
+        if (result.warnings && result.warnings.length > 0) {
+          console.log('Avertissements import:', result.warnings);
+          setTimeout(() => {
+            showToast(`${result.warnings.length} avertissement(s)`, 'warning');
+          }, 1000);
+        }
+
+        closeImportModal();
+        loadPrinters();
+      } else {
+        showToast(result.error, 'error');
+        if (result.details) {
+          console.error('Details erreurs:', result.details);
+        }
+      }
+    }
+
+    // Reset le bouton d'import
+    function resetImportButton() {
+      document.getElementById('importBtn').disabled = false;
+      document.getElementById('importBtn').textContent = 'Importer';
+    }
+
+    // Telecharger le template CSV
+    function downloadTemplate() {
+      google.script.run
+        .withSuccessHandler((template) => {
+          downloadFile('template_imprimantes.csv', template);
+          showToast('Template telecharge', 'success');
+        })
+        .withFailureHandler(handleError)
+        .getCSVTemplate();
+    }
+
+    // Exporter les imprimantes actuelles en CSV
+    function exportCurrentPrinters() {
+      if (printers.length === 0) {
+        showToast('Aucune imprimante a exporter', 'error');
+        return;
+      }
+
+      google.script.run
+        .withSuccessHandler((csv) => {
+          const date = new Date().toISOString().slice(0, 10);
+          downloadFile(`imprimantes_${date}.csv`, csv);
+          showToast(`${printers.length} imprimante(s) exportee(s)`, 'success');
+        })
+        .withFailureHandler(handleError)
+        .exportPrintersToCSV();
+    }
+
+    // Telecharger un fichier
+    function downloadFile(filename, content) {
+      const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+      link.click();
+      URL.revokeObjectURL(link.href);
+    }
+
+  </script>
+</body>
+</html>

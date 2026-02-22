@@ -1,0 +1,17 @@
+# Logs
+sync_log.txt
+ping_log.txt
+*.log
+
+# Fichiers de statut temporaires
+printer_status_history.json
+ping_summary.txt
+
+# Fichiers de configuration secrets (NE PAS VERSIONNER)
+secrets.ps1
+config.secret.json
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+desktop.ini
