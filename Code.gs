@@ -619,6 +619,7 @@ const PRINTER_IMAGE_MAPPING = {
   'LaserJet MFP E73130': 'E73130.jpg',
   'LaserJet MFP E82540': 'E82540.jpg',
   'LaserJet Mngd E52645': 'E52645.jpg',
+  'LaserJet Mngd E50145': 'E50145.jpg',
   'LaserJet Mngd E50145dnm': 'E50145.jpg',
   'LaserJet Managed E40040': 'E40040.jpg',
   'LJ Mgd E50145dnm': 'E50145.jpg',
