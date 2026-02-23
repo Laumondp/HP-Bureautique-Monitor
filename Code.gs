@@ -625,7 +625,8 @@ const PRINTER_IMAGE_MAPPING = {
   'Color LaserJet E55040': 'E55040.jpg',
   'Color LaserJet MFP E87760': 'E87760.jpg',
   'Color LJ Mgd MFP E877dn': 'E87760.jpg',
-  'SHARP BP-50M31': 'BP-50M31.jpg'
+  'SHARP BP-50M31': 'BP-50M31.jpg',
+  'CANON': 'CANON.jpg'
 };
 
 /**
@@ -1168,7 +1169,8 @@ function getSupportedModels() {
     { model: 'LaserJet Mngd E52645', description: 'HP LaserJet Managed E52645' },
     { model: 'Color LaserJet E55040', description: 'HP Color LaserJet E55040' },
     { model: 'Color LaserJet MFP E87760', description: 'HP Color LaserJet MFP E87760' },
-    { model: 'SHARP BP-50M31', description: 'Sharp BP-50M31' }
+    { model: 'SHARP BP-50M31', description: 'Sharp BP-50M31' },
+    { model: 'CANON', description: 'Canon' }
   ];
 }
 
