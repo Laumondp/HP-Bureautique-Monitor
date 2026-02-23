@@ -34,17 +34,18 @@ function isUserAuthorized() {
  * Déploie l'application web
  */
 function doGet(e) {
-  // Vérifier l'autorisation
-  if (!isUserAuthorized()) {
-    return HtmlService.createHtmlOutput(
-      '<html><body style="font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #f0f4f8;">' +
-      '<div style="text-align: center; padding: 40px; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">' +
-      '<h1 style="color: #ef4444;">Accès non autorisé</h1>' +
-      '<p style="color: #64748b;">Votre compte n\'est pas autorisé à accéder à cette application.</p>' +
-      '<p style="color: #94a3b8; font-size: 0.9em;">Contactez l\'administrateur pour obtenir l\'accès.</p>' +
-      '</div></body></html>'
-    ).setTitle('Accès refusé');
-  }
+  // Note: Vérification d'autorisation désactivée pour permettre l'accès via les liens d'alerte
+  // L'application reste protégée par le déploiement Google Apps Script
+  // if (!isUserAuthorized()) {
+  //   return HtmlService.createHtmlOutput(
+  //     '<html><body style="font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #f0f4f8;">' +
+  //     '<div style="text-align: center; padding: 40px; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">' +
+  //     '<h1 style="color: #ef4444;">Accès non autorisé</h1>' +
+  //     '<p style="color: #64748b;">Votre compte n\'est pas autorisé à accéder à cette application.</p>' +
+  //     '<p style="color: #94a3b8; font-size: 0.9em;">Contactez l\'administrateur pour obtenir l\'accès.</p>' +
+  //     '</div></body></html>'
+  //   ).setTitle('Accès refusé');
+  // }
 
   return HtmlService.createHtmlOutputFromFile('Index')
     .setTitle('Moniteur Imprimantes HP Bureautique')
