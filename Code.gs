@@ -126,10 +126,10 @@ function getDefaultPrinterConfig() {
   return [
     {
       id: 'printer_1',
-      name: 'ZT410-Expedition-01',
+      name: 'HP-LaserJet-Test',
       ip: '8.8.8.8',
-      model: 'ZT410',
-      location: 'Zone Expédition',
+      model: 'LaserJet E50145',
+      location: 'Test',
       serial: '',
       mac: '',
       x: 150,
@@ -1135,7 +1135,7 @@ function getMACError(mac) {
  * Génère un template CSV
  */
 function getCSVTemplate() {
-  return 'name,ip,model,location,serial,mac,x,y,description\nZT410-Example,192.168.1.101,ZT410,Zone A,SN123,00:1A:2B:3C:4D:5E,200,150,Description';
+  return 'name,ip,model,location,serial,mac,x,y,description\nHP-LaserJet-01,192.168.1.101,LaserJet E50145,Bureau,SN123,00:1A:2B:3C:4D:5E,200,150,Description';
 }
 
 /**
