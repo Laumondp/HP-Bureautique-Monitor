@@ -3,7 +3,7 @@
 # Surveille les modifications et synchronise vers le dossier Drive spécifié
 
 # Configuration
-$SourceFolder = "C:\Users\Philippe\Documents\zebra-printer-monitor"
+$SourceFolder = "C:\Users\Philippe\Documents\hp-bureautique-monitor"
 $RcloneRemote = "gdrive"
 $DriveFolderId = "1lGpKCfSENKSGF6lz4NO6v7DcN9lmgRPs"
 $LogFile = "$SourceFolder\sync_log.txt"

@@ -1,5 +1,5 @@
 @echo off
-title Zebra Printer Monitor - Sync to Google Drive
+title HP Bureautique Monitor - Sync to Google Drive
 echo ============================================
 echo   Synchronisation automatique Google Drive
 echo ============================================

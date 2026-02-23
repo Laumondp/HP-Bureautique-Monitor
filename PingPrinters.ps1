@@ -4,7 +4,7 @@
 # Note: Utilise TCP au lieu de ICMP (ping) car les pings sont souvent bloqués en entreprise
 
 # Configuration - URL de votre Web App déployée
-$WebAppUrl = "https://script.google.com/macros/s/AKfycbznnKwXXvEdLohEAf2_a3iMYVrLwItRaiJKS0Vo5P40wW4MWbOEdxAMpwEMGBcYewgI/exec"
+$WebAppUrl = "https://script.google.com/macros/s/AKfycbxqlg0NwCr4XvRWJkSNJW0PGATxWS142kRyDRam127FlsP2G9cyI4klRbl6Lu8JX7zV/exec"
 
 # Charger la clé API depuis le fichier secrets (non versionné)
 $SecretsFile = "$PSScriptRoot\secrets.ps1"
@@ -201,7 +201,7 @@ function Write-SummaryFile {
 
     $summary = @"
 $separator
-  ZEBRA PRINTER MONITOR - RAPPORT DE PING
+  HP BUREAUTIQUE MONITOR - RAPPORT DE PING
   $timestamp
 $separator
 
