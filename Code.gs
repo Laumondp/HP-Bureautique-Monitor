@@ -7,7 +7,7 @@
  */
 
 // Colonnes de la feuille Printers
-const PRINTER_COLUMNS = ['id', 'name', 'ip', 'model', 'location', 'serial', 'mac', 'x', 'y', 'description', 'contractEndDate'];
+const PRINTER_COLUMNS = ['id', 'name', 'ip', 'model', 'location', 'serial', 'mac', 'x', 'y', 'description', 'contractEndDate', 'switch', 'gi'];
 
 // ID du Google Sheets (hardcodé pour éviter les problèmes de configuration)
 const HARDCODED_SPREADSHEET_ID = '1Ha-klMOZDRizS4NNp6RLghclZPMqykhXqtvhxcyHM70';
@@ -87,23 +87,34 @@ function getPrinterConfig() {
       return [];
     }
 
+    // Lire les en-têtes pour mapper les colonnes par nom
+    const headers = data[0].map(h => h.toString().trim().toLowerCase());
+    const colIndex = {};
+    headers.forEach((h, i) => { colIndex[h] = i; });
+
     const printers = [];
     for (let i = 1; i < data.length; i++) {
       const row = data[i];
-      if (!row[0] && !row[2]) continue; // Ignorer les lignes vides
+      const id = row[colIndex['id']] || row[0];
+      const ip = row[colIndex['ip']] || row[2];
+      if (!id && !ip) continue; // Ignorer les lignes vides
+
+      const contractVal = row[colIndex['contractenddate']] || row[colIndex['contract']] || '';
 
       printers.push({
-        id: row[0] || 'printer_' + Date.now() + '_' + i,
-        name: (row[1] || '').toString().trim(),
-        ip: (row[2] || '').toString().trim(),
-        model: (row[3] || '').toString().trim(),
-        location: (row[4] || '').toString().trim(),
-        serial: row[5] || '',
-        mac: row[6] || '',
-        x: parseInt(row[7]) || 0,
-        y: parseInt(row[8]) || 0,
-        description: row[9] || '',
-        contractEndDate: row[10] ? (row[10] instanceof Date ? row[10].toISOString().split('T')[0] : row[10]) : '',
+        id: id || 'printer_' + Date.now() + '_' + i,
+        name: (row[colIndex['name']] || '').toString().trim(),
+        ip: (ip || '').toString().trim(),
+        model: (row[colIndex['model']] || '').toString().trim(),
+        location: (row[colIndex['location']] || '').toString().trim(),
+        serial: row[colIndex['serial']] || '',
+        mac: row[colIndex['mac']] || '',
+        x: parseInt(row[colIndex['x']]) || 0,
+        y: parseInt(row[colIndex['y']]) || 0,
+        description: row[colIndex['description']] || '',
+        contractEndDate: contractVal ? (contractVal instanceof Date ? contractVal.toISOString().split('T')[0] : contractVal) : '',
+        switchName: (row[colIndex['switch']] || '').toString().trim(),
+        gi: (row[colIndex['gi']] || '').toString().trim(),
         status: 'unknown'
       });
     }
@@ -158,10 +169,10 @@ function savePrinterConfig(printers) {
 
     if (!sheet) {
       sheet = ss.insertSheet('Printers');
-      sheet.getRange('A1:K1').setValues([PRINTER_COLUMNS]);
-      sheet.getRange('A1:K1').setFontWeight('bold');
-      sheet.getRange('A1:K1').setBackground('#4285f4');
-      sheet.getRange('A1:K1').setFontColor('#ffffff');
+      sheet.getRange('A1:M1').setValues([PRINTER_COLUMNS]);
+      sheet.getRange('A1:M1').setFontWeight('bold');
+      sheet.getRange('A1:M1').setBackground('#4285f4');
+      sheet.getRange('A1:M1').setFontColor('#ffffff');
       sheet.setFrozenRows(1);
     }
 
@@ -184,7 +195,9 @@ function savePrinterConfig(printers) {
         p.x || 0,
         p.y || 0,
         p.description || '',
-        p.contractEndDate || ''
+        p.contractEndDate || '',
+        p.switchName || '',
+        p.gi || ''
       ]);
 
       sheet.getRange(2, 1, data.length, PRINTER_COLUMNS.length).setValues(data);
@@ -355,9 +368,9 @@ function initializeSpreadsheet() {
   // Feuille Printers
   const printersSheet = ss.insertSheet('Printers');
   printersSheet.getRange('A1:K1').setValues([PRINTER_COLUMNS]);
-  printersSheet.getRange('A1:K1').setFontWeight('bold');
-  printersSheet.getRange('A1:K1').setBackground('#4285f4');
-  printersSheet.getRange('A1:K1').setFontColor('#ffffff');
+  printersSheet.getRange('A1:M1').setFontWeight('bold');
+  printersSheet.getRange('A1:M1').setBackground('#4285f4');
+  printersSheet.getRange('A1:M1').setFontColor('#ffffff');
   printersSheet.setFrozenRows(1);
 
   // Ajuster la largeur des colonnes
@@ -392,7 +405,9 @@ function initializeSpreadsheet() {
       p.x || 0,
       p.y || 0,
       p.description || '',
-      p.contractEndDate || ''
+      p.contractEndDate || '',
+      p.switchName || '',
+      p.gi || ''
     ]);
     printersSheet.getRange(2, 1, data.length, PRINTER_COLUMNS.length).setValues(data);
 
@@ -1016,6 +1031,8 @@ function importPrintersFromCSV(csvContent, replaceAll) {
       const serial = values[colIndex['serial']]?.trim() || '';
       const mac = values[colIndex['mac']]?.trim() || '';
       const description = colIndex['description'] !== undefined ? (values[colIndex['description']]?.trim() || '') : '';
+      const switchVal = colIndex['switch'] !== undefined ? (values[colIndex['switch']]?.trim() || '') : '';
+      const giVal = colIndex['gi'] !== undefined ? (values[colIndex['gi']]?.trim() || '') : '';
 
       if (!name || !ip || !isValidIP(ip) || seenIPs.has(ip) || !model || !location || isNaN(x) || isNaN(y)) {
         errors.push(`Ligne ${lineNum}: données invalides`);
@@ -1026,6 +1043,8 @@ function importPrintersFromCSV(csvContent, replaceAll) {
       newPrinters.push({
         id: 'printer_' + Date.now() + '_' + i,
         name, ip, model, location, serial, mac, x, y, description,
+        switchName: switchVal,
+        gi: giVal,
         status: 'unknown'
       });
     }
@@ -1137,7 +1156,7 @@ function getMACError(mac) {
  * Génère un template CSV
  */
 function getCSVTemplate() {
-  return 'name,ip,model,location,serial,mac,x,y,description\nHP-LaserJet-01,192.168.1.101,LaserJet E50145,Bureau,SN123,00:1A:2B:3C:4D:5E,200,150,Description';
+  return 'name,ip,model,location,serial,mac,x,y,description,switch,gi\nHP-LaserJet-01,192.168.1.101,LaserJet E50145,Bureau,SN123,00:1A:2B:3C:4D:5E,200,150,Description,SW-PROD-01,1/0/24';
 }
 
 /**
@@ -1145,13 +1164,15 @@ function getCSVTemplate() {
  */
 function exportPrintersToCSV() {
   const printers = getPrinterConfig();
-  const header = 'name,ip,model,location,serial,mac,x,y,description';
+  const header = 'name,ip,model,location,serial,mac,x,y,description,switch,gi';
 
   const lines = printers.map(p => {
     const desc = (p.description || '').replace(/"/g, '""');
     const serial = (p.serial || '').replace(/"/g, '""');
     const mac = (p.mac || '').replace(/"/g, '""');
-    return `${p.name},${p.ip},${p.model},${p.location},"${serial}","${mac}",${p.x},${p.y},"${desc}"`;
+    const switchVal = (p.switchName || '').replace(/"/g, '""');
+    const giVal = (p.gi || '').replace(/"/g, '""');
+    return `${p.name},${p.ip},${p.model},${p.location},"${serial}","${mac}",${p.x},${p.y},"${desc}","${switchVal}","${giVal}"`;
   });
 
   return header + '\n' + lines.join('\n');
@@ -1418,4 +1439,54 @@ function addContractEndDateColumn() {
   sheet.setColumnWidth(colIndex, 120);
 
   return { success: true, message: 'Colonne contractEndDate ajoutée avec succès' };
+}
+
+/**
+ * Ajoute les colonnes switch et gi à la feuille Printers existante
+ * Exécutez cette fonction UNE SEULE FOIS pour mettre à jour la feuille
+ */
+function addSwitchGiColumns() {
+  const spreadsheetId = getSpreadsheetId();
+  if (!spreadsheetId) {
+    return { success: false, error: 'SPREADSHEET_ID non configuré' };
+  }
+
+  const ss = SpreadsheetApp.openById(spreadsheetId);
+  const sheet = ss.getSheetByName('Printers');
+
+  if (!sheet) {
+    return { success: false, error: 'Feuille Printers non trouvée' };
+  }
+
+  // Vérifier si les colonnes existent déjà
+  const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+  const results = [];
+
+  // Ajouter colonne switch (colonne L - index 12)
+  if (!headers.includes('switch')) {
+    const colIndex = 12;
+    sheet.getRange(1, colIndex).setValue('switch');
+    sheet.getRange(1, colIndex).setFontWeight('bold');
+    sheet.getRange(1, colIndex).setBackground('#4285f4');
+    sheet.getRange(1, colIndex).setFontColor('#ffffff');
+    sheet.setColumnWidth(colIndex, 100);
+    results.push('Colonne switch ajoutée');
+  } else {
+    results.push('Colonne switch existe déjà');
+  }
+
+  // Ajouter colonne gi (colonne M - index 13)
+  if (!headers.includes('gi')) {
+    const colIndex = 13;
+    sheet.getRange(1, colIndex).setValue('gi');
+    sheet.getRange(1, colIndex).setFontWeight('bold');
+    sheet.getRange(1, colIndex).setBackground('#4285f4');
+    sheet.getRange(1, colIndex).setFontColor('#ffffff');
+    sheet.setColumnWidth(colIndex, 80);
+    results.push('Colonne gi ajoutée');
+  } else {
+    results.push('Colonne gi existe déjà');
+  }
+
+  return { success: true, message: results.join(', ') };
 }

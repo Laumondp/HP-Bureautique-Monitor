@@ -439,6 +439,14 @@
       color: white;
     }
 
+    .printer-network-info {
+      font-size: 0.55em;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 2px;
+      line-height: 1.1;
+    }
+
     .printer-item-details {
       flex: 1;
       min-width: 0;
@@ -1168,6 +1176,14 @@
           <label for="printerContractEndDate">Date de fin de contrat maintenance</label>
           <input type="date" id="printerContractEndDate" placeholder="Date de fin de contrat">
         </div>
+        <div class="form-group">
+          <label for="printerSwitch">Switch</label>
+          <input type="text" id="printerSwitch" placeholder="Ex: SW-PROD-01">
+        </div>
+        <div class="form-group">
+          <label for="printerGi">Port Gi</label>
+          <input type="text" id="printerGi" placeholder="Ex: 1/0/24">
+        </div>
         <div class="form-actions">
           <button type="button" class="btn btn-secondary" onclick="closeModal()">Annuler</button>
           <button type="button" class="btn btn-secondary" id="deleteBtn" onclick="deletePrinter()" style="display:none;">Supprimer</button>
@@ -1684,11 +1700,21 @@
         // Status text
         const statusText = status === 'online' ? 'En ligne' : status === 'offline' ? 'Hors ligne' : 'Inconnu';
 
+        // Network info (switch/gi)
+        let networkInfoHtml = '';
+        if (printer.switchName) {
+          networkInfoHtml += `<div class="printer-network-info">${printer.switchName}</div>`;
+        }
+        if (printer.gi) {
+          networkInfoHtml += `<div class="printer-network-info">Gi${printer.gi}</div>`;
+        }
+
         item.innerHTML = `
           <div class="printer-item-content">
             <div class="printer-item-image-container">
               ${imageHtml}
               <span class="printer-status-badge status-${status}">${statusText}</span>
+              ${networkInfoHtml}
             </div>
             <div class="printer-item-details">
               <div class="printer-item-header">
@@ -2022,6 +2048,8 @@
       document.getElementById('printerY').value = printer.y;
       document.getElementById('printerDescription').value = printer.description || '';
       document.getElementById('printerContractEndDate').value = printer.contractEndDate || '';
+      document.getElementById('printerSwitch').value = printer.switchName || '';
+      document.getElementById('printerGi').value = printer.gi || '';
       document.getElementById('deleteBtn').style.display = 'block';
       document.getElementById('printerModal').classList.add('active');
     }
@@ -2046,6 +2074,8 @@
         y: parseInt(document.getElementById('printerY').value),
         description: document.getElementById('printerDescription').value,
         contractEndDate: document.getElementById('printerContractEndDate').value,
+        switchName: document.getElementById('printerSwitch').value,
+        gi: document.getElementById('printerGi').value,
         status: 'unknown'
       };
 
